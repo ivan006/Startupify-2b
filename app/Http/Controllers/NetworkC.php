@@ -144,7 +144,7 @@ class NetworkC extends Controller
         $RichDataShow = $DataValues[$Attr[2]];
 
 
-        return view('group-edit', compact('DataShowAll','allURLs','RichDataShow','Attr',));
+        return view('group-edit', compact('DataShowAll','allURLs','RichDataShow','Attr'));
       } else {
         // $allURLs = PostM::ShowActions(func_get_args());
         // $PostList = GroupM::ShowAll();
