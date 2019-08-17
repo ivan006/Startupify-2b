@@ -1,0 +1,24 @@
+
+.g-bor-gre {
+  border: 2px lightgrey solid;
+}
+.g-bor-top-0 {  border-top: 0px ;}
+.g-pad-1em {  padding: 1em ;}
+.f-width-200px {width: 200px;}
+.f-width-270px {width:270px;}
+.f-width-135px {width:135px;}
+/* stuf */
+.f-treeview li.f-leaf {
+  list-style-image: url('https://www.w3.org/TR/wai-aria-practices/examples/treeview/treeview-1/images/file.png');
+}
+.f-treeview li {
+  list-style-image: url('https://www.w3.org/TR/wai-aria-practices/examples/treeview/treeview-1/images/closed.png');
+}
+/* stuf */
+
+
+/* more stuf */
+  .f-toggle ~ .content{display:none;}
+  .f-toggle:checked ~ .content{display:block;}
+/* more stuf */
+.f-fon-siz-8px {font-size: 8px;}

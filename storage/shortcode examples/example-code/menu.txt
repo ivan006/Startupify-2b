@@ -1,0 +1,55 @@
+
+<style>
+
+  .g-multi-level-dropdown ul{list-style:none;padding:0;margin:0;background:#1bc2a2;}
+  .g-multi-level-dropdown ul li{display:block;position:relative;float:left;background:#1bc2a2;}
+  /* This hides the dropdowns */
+  .g-multi-level-dropdown li .toggle ul{display:none;}
+  .g-multi-level-dropdown ul li a{display:inline-block;padding:1em;text-decoration:none;white-space:nowrap;color:#fff;}
+  .g-multi-level-dropdown ul .toggle:focus-within{background:#2c3e50;}
+  /* Display the dropdown */
+  .g-multi-level-dropdown .toggle:focus-within > ul{display:block;position:absolute;}
+  .g-multi-level-dropdown .toggle:focus-within li{float:none;}
+  .g-multi-level-dropdown .toggle:focus-within a{background:#1bc2a2;}
+  .g-multi-level-dropdown .toggle:focus-within .toggle:focus-within{background:#2c3e50;}
+  .g-multi-level-dropdown > ul li ul li{border-top:0;}
+  /* Displays second level dropdowns to the right of the first level dropdown */
+  .g-multi-level-dropdown ul ul ul{left:100%;top:0;}
+  /* Simple clearfix */
+  .g-multi-level-dropdown ul:before, .g-multi-level-dropdown ul:after{content:" "; display:table;}
+  .g-multi-level-dropdown ul:after{clear:both;}
+
+.g-multi-level-dropdown ul {
+  display:none;
+}
+.g-multi-level-dropdown >   ul {
+  display:block;
+}
+</style>
+
+<div class="g-multi-level-dropdown">
+  <ul>
+    [page_list]
+    [twig]
+    <li>
+      <a href="[link]">
+        [name]
+      </a>
+      <span class="toggle">
+      <a href="#">+</a>
+      <ul>
+        [inner_twig]
+      </ul>
+      </span>
+    </li>
+    [/twig]
+    [leaf]
+    <li>
+      <a href="[link]">
+        [name]
+      </a>
+    </li>
+    [/leaf]
+    [/page_list]
+  </ul>
+</div>

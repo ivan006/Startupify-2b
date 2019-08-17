@@ -1,0 +1,40 @@
+
+  .f-fon-18px{
+    font-size: 18px;
+  }
+  .f-fon-fam-open {
+    font-family: "Open Sans", sans-serif;
+  }
+  .f-bg-col-blu {
+    color: #fff !important;
+    background-color: #4d636f !important;
+  }
+
+
+  .f-multi-level-dropdown ul{list-style:none;padding:0;margin:0;}
+  .f-multi-level-dropdown ul li{display:block;position:relative;float:left;background:lightgrey;}
+  /* This hides the dropdowns */
+  .f-multi-level-dropdown li .toggle ul{display:none;}
+  .f-multi-level-dropdown ul li a{display:inline-block;padding:1em;text-decoration:none;white-space:nowrap;color:black;}
+  .f-multi-level-dropdown ul .toggle:focus-within{}
+  /* Display the dropdown */
+  .f-multi-level-dropdown .toggle:focus-within > ul{display:block;position:absolute;}
+  .f-multi-level-dropdown .toggle:focus-within li{float:none;}
+  .f-multi-level-dropdown .toggle:focus-within a{}
+  .f-multi-level-dropdown .toggle:focus-within .toggle:focus-within{}
+  .f-multi-level-dropdown > ul li ul li{border-top:0;}
+  /* Displays second level dropdowns to the right of the first level dropdown */
+  .f-multi-level-dropdown ul ul ul{left:100%;top:0;}
+  /* Simple clearfix */
+  .f-multi-level-dropdown ul:before, .f-multi-level-dropdown ul:after{content:" "; display:table;}
+  .f-multi-level-dropdown ul:after{clear:both;}
+
+.f-multi-level-dropdown ul {
+  display:none;
+}
+.f-multi-level-dropdown >   ul {
+  display:block;
+}
+body{
+  margin: 0;
+}
