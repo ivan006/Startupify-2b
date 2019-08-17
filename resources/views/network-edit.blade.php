@@ -15,7 +15,7 @@
 @include('includes.item-menus/SmartDataFolderItemMenu')
 @include('includes.item-menus/SmartDataNetworkItemMenu')
 @include('includes.item-menus/ShallowSmartDataMenu')
-@include('includes.encode_decode')
+
 
 @include('includes.menu_post')
 

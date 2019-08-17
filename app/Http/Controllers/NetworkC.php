@@ -144,17 +144,12 @@ class NetworkC extends Controller
         $RichDataShow = $DataValues[$Attr[2]];
 
 
-        return view('group-edit', compact(
-          'DataShowAll',
-          'allURLs',
-          'RichDataShow',
-          'Attr',
-        ));
+        return view('group-edit', compact('DataShowAll','allURLs','RichDataShow','Attr',));
       } else {
-        $allURLs = PostM::ShowActions(func_get_args());
-        $PostList = GroupM::ShowAll();
-        $SmartDataItemM_ShowActions = SmartDataItemM::ShowActions();
-        return view('network-edit', compact('PostList', 'allURLs', 'SmartDataItemM_ShowActions'));
+        // $allURLs = PostM::ShowActions(func_get_args());
+        // $PostList = GroupM::ShowAll();
+        // $SmartDataItemM_ShowActions = SmartDataItemM::ShowActions();
+        // return view('network-edit', compact('PostList', 'allURLs', 'SmartDataItemM_ShowActions'));
       }
     }
 
