@@ -240,8 +240,6 @@ class Data extends Model
                   'name'=>$value[$Attr[0]],
                 ]);
               }
-
-              StoreHelperStore($Action, $value,$Attr);
               break;
               case 'create_folder':
 
@@ -254,6 +252,7 @@ class Data extends Model
 
               // Data::Create($name,$parent_id,$parent_type,$type,$content)
               Data::Add($name, $parent_id,$parent_type,$type,$content);
+              $Action = null;
               break;
               case 'create_file':
 
@@ -266,12 +265,15 @@ class Data extends Model
 
               // Data::Create($name,$parent_id,$parent_type,$type,$content)
               Data::Add($name, $parent_id,$parent_type,$type,$content);
+
+              $Action = null;
               break;
 
               default:
               // code...
               break;
             }
+            StoreHelperStore($Action, $value,$Attr);
           } else {
 
             if (isset($value[$Attr[3]])) {
