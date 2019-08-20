@@ -54,13 +54,14 @@ class NetworkC extends Controller
 
       $routeParameters = func_get_args();
       array_shift($routeParameters);
+      // dd($routeParameters);
 
       if (!empty($routeParameters)) {
         Post::Store($routeParameters, $request);
         $allURLs = Post::ShowActions($routeParameters);
         return redirect($allURLs['sub_post_edit']);
       } else {
-        GroupM::Create($request);
+        Group::Add($request);
         $allURLs = Post::ShowActions($routeParameters);
         return redirect($allURLs['sub_post_edit']);
       }
@@ -122,11 +123,11 @@ class NetworkC extends Controller
         array_shift($arguments);
         $ShowID = PostM::ShowID($routeParameters);
 
-        $DataShowAll = Data::ShowAll($routeParameters);
+        $Attr = Data::ShowAttributeTypes();
+        $DataShowAll[$Attr[2]] = Data::ShowAll($routeParameters);
         // dd($DataShowAll);
         // $ShowAllShallowSmartData = PostM::ShowAllShallowSmartData($routeParameters);
         $SmartDataItemM_ShowActions = Data::ShowActions();
-        $Attr = Data::ShowAttributeTypes();
 
         $allURLs = Post::ShowActions($routeParameters);
 
@@ -143,13 +144,15 @@ class NetworkC extends Controller
         }
         $RichDataShow = $DataValues[$Attr[2]];
 
+        $PostShowImSubPosts = Post::ShowImmediateSubPost($routeParameters);
 
-        return view('group-edit', compact('DataShowAll','allURLs','RichDataShow','Attr'));
+
+        return view('group-edit', compact('DataShowAll','allURLs','RichDataShow','Attr','PostShowImSubPosts'));
       } else {
-        // $allURLs = PostM::ShowActions(func_get_args());
-        // $PostList = GroupM::ShowAll();
-        // $SmartDataItemM_ShowActions = SmartDataItemM::ShowActions();
-        // return view('network-edit', compact('PostList', 'allURLs', 'SmartDataItemM_ShowActions'));
+        $allURLs = Post::ShowActions(func_get_args());
+        $PostList = Group::ShowAll();
+        $SmartDataItemM_ShowActions = Data::ShowActions();
+        return view('network-edit', compact('PostList', 'allURLs', 'SmartDataItemM_ShowActions'));
       }
     }
 

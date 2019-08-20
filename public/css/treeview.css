@@ -1,12 +1,16 @@
 
-.g-bor-gre {
-  border: 2px lightgrey solid;
-}
+.g-bor-gre {border: 2px lightgrey solid;}
+.g-bor-lig-gre {border: 2px #E8E8E8 solid;}
+/* .g-bor-none {border: 0 lightgrey solid;} */
 .g-bor-top-0 {  border-top: 0px ;}
+/* .g-bor-top-gre {  border-top: 2px lightgrey solid ;} */
 .g-pad-1em {  padding: 1em ;}
+.g-pad-2px {  padding: 2px ;}
+.g-mar-4px {  margin: 4px ;}
 .f-width-200px {width: 200px;}
 .f-width-270px {width:270px;}
 .f-width-135px {width:135px;}
+.f-res-ver {resize: vertical;}
 /* stuf */
 .f-treeview li.f-leaf {
   list-style-image: url('https://www.w3.org/TR/wai-aria-practices/examples/treeview/treeview-1/images/file.png');

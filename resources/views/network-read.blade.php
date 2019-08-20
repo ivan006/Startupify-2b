@@ -11,9 +11,9 @@
 
 
 
-@include('includes.item-menus/SmartDataFileItemMenu')
-@include('includes.item-menus/SmartDataFolderItemMenu')
-@include('includes.item-menus/ShallowSmartDataMenu')
+@include('includes.item-menus/DataFileMenu')
+@include('includes.item-menus/DataFolderMenu')
+
 
 
 @include('includes.menu_post')

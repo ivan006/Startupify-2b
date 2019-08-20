@@ -20,10 +20,10 @@ class Post extends Model
     return $this->morphMany('App\Post', 'parent');
   }
 
-  public static function ShowActions() {
-    if (!empty(func_get_args()[0])) {
-      $PostShowSig = Post::ShowRelativeSignature(func_get_args()[0]);
-      $GroupShowSig = Group::ShowSignature(func_get_args()[0]);
+  public static function ShowActions($routeParameters) {
+    if (!empty($routeParameters)) {
+      $PostShowSig = Post::ShowRelativeSignature($routeParameters);
+      $GroupShowSig = Group::ShowSignature($routeParameters);
       $Slug = $GroupShowSig."/".$PostShowSig;
     } else {
       $Slug = null;
@@ -117,29 +117,107 @@ class Post extends Model
     // }
 
     $GroupShowID = Group::ShowID($routeParameters);
-    $GroupShowAll = Group::find($GroupShowID);
+    $GroupShow = Group::find($GroupShowID);
 
-    $SubEntityList = Group::find($GroupShowAll["id"])->PostChildren->toArray();
-    $Slug = route('NetworkC.show')."/".$GroupShowAll["name"];
+    $SubEntityList = Group::find($GroupShow["id"])->PostChildren->toArray();
+    $Slug = route('NetworkC.show')."/".$GroupShow["name"];
     $SubEntities = array (
       "List" => $SubEntityList,
       "Slug" => $Slug,
     );
-    $result[$GroupShowAll["name"]]["content"] = ShowSubPostHelper($SubEntities,$routeParameters);
-    $result[$GroupShowAll["name"]]["url"] = $Slug;
+    $result[$GroupShow["name"]]["content"] = ShowSubPostHelper($SubEntities,$routeParameters);
+    $result[$GroupShow["name"]]["url"] = $Slug;
+
+    return $result;
+  }
+  public static function ShowImmediateSubPost($routeParameters) {
+
+    $GroupShowID = Group::ShowID($routeParameters);
+    $PostShowID = Post::ShowID($GroupShowID,$routeParameters);
+
+    if (!empty($PostShowID)) {
+      $EntityShow = Post::find($PostShowID);
+      $SubEntityList = Post::find($EntityShow["id"])->PostChildren->toArray();
+
+    } elseif (!empty($GroupShowID)) {
+      $EntityShow = Group::find($GroupShowID);
+      $SubEntityList = Group::find($EntityShow["id"])->PostChildren->toArray();
+
+    }
+
+
+    $result = array();
+    foreach ($SubEntityList as $key => $value) {
+      // dd($value);
+      $result[$value["name"]]["url"] = Post::ShowActions($routeParameters)["sub_post_edit"]."/".$value["name"];
+    }
 
     return $result;
   }
 
   public static function Store($routeParameters, $request) {
 
+    // $GroupShowID = Group::ShowID($routeParameters);
+    // $PostShowID = Post::ShowID($GroupShowID,$routeParameters);
+    // if (!empty($PostShowID)) {
+    //   $EntityShow = Post::find($PostShowID);
+    // } elseif (!empty($GroupShowID)) {
+    //   $EntityShow = Group::find($GroupShowID);
+    // }
+    // dd($request);
+
+    switch ($request->get('form')) {
+      case "data":
+        // code...
+        Data::Store($request);
+        break;
+      case "posts":
+        // code...
+        Post::Add($routeParameters,$request);
+        break;
+
+      default:
+        // code...
+        break;
+    }
+
+  }
+  public static function Add($routeParameters, $request) {
     $GroupShowID = Group::ShowID($routeParameters);
     $PostShowID = Post::ShowID($GroupShowID,$routeParameters);
 
-    if (!empty($request->get('Data_Form'))) {
-      Data::Store($request, $PostShowID);
+    $name = $request->get('name');
+
+    if (!empty($PostShowID)) {
+      $parent_id = $PostShowID;
+      $parent_type = "App\Post";
+    } elseif (!empty($GroupShowID)) {
+      $parent_id = $GroupShowID;
+      $parent_type = "App\Group";
     }
+
+    $var = Post::create([
+      'name'=>$name,
+      'parent_id'=>$parent_id,
+      'parent_type'=>$parent_type,
+    ]);
+
+
+    $PostShowID = $var->attributes["id"];
+
+    $name = "_data";
+    $parent_id = $PostShowID;
+    $parent_type = "App\Post";
+    $type = "folder";
+    $content = "null";
+
+    // Data::Create($name,$parent_id,$parent_type,$type,$content)
+    Data::Add($name, $parent_id,$parent_type,$type,$content);
+    // mkdir(GroupM::ShowBaseLocation()."/".$request->get('name'));
+
   }
+
+
 
 
 }

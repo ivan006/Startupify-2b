@@ -11,10 +11,10 @@
 
 
 
-@include('includes.item-menus/SmartDataFileItemMenu')
-@include('includes.item-menus/SmartDataFolderItemMenu')
-@include('includes.item-menus/SmartDataNetworkItemMenu')
-@include('includes.item-menus/ShallowSmartDataMenu')
+@include('includes.item-menus/DataFileMenu')
+@include('includes.item-menus/DataFolderMenu')
+@include('includes.item-menus/PostAndGroupMenu')
+
 
 
 @include('includes.menu_post')
@@ -62,7 +62,7 @@
               <ul>
                 <li>
                   Network
-                  <?php echo SmartDataNetworkItemMenu('hey - Copy',$SmartDataItemM_ShowActions); ?>
+                  <?php echo PostAndGroupMenu(); ?>
                   <ul>
                     <?php //dd($PostList) ?>
                     <?php foreach($PostList as $key => $value){?>

@@ -4,6 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Group;
+use App\Post;
+use App\Data;
+
 class Group extends Model
 {
 
@@ -14,6 +18,9 @@ class Group extends Model
 
   public function PostChildren() {
     return $this->morphMany('App\Post', 'parent');
+  }
+  public function DataChildren() {
+    return $this->morphMany('App\Data', 'parent');
   }
   // public static function ShowBaseLocation() {
   //   // return "storage/app/public/";
@@ -49,10 +56,35 @@ class Group extends Model
     return $var;
   }
   public static function ShowID($routeParameters){
-
+    // dd($routeParameters);
     $ShowID = Group::where('name', $routeParameters[0])->first()->id;
 
     return $ShowID;
 
+  }
+  public static function Add($request) {
+    // dd($request);
+    $GroupName = $request["name"];
+    // dd($GroupName);
+    // dd($request);
+    // Group::create([
+    //   'name'=>$GroupName,
+    // ]);
+    $var = new Group;
+    $var->name = $GroupName;
+    $var->save();
+
+
+    $GroupId = $var->attributes["id"];
+
+    $name = "_data";
+    $parent_id = $GroupId;
+    $parent_type = "App\Group";
+    $type = "folder";
+    $content = "null";
+
+    // Data::Create($name,$parent_id,$parent_type,$type,$content)
+    Data::Add($name, $parent_id,$parent_type,$type,$content);
+    // mkdir(GroupM::ShowBaseLocation()."/".$request->get('name'));
   }
 }

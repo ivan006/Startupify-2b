@@ -6,9 +6,10 @@
 
 
 
-@include('includes.item-menus/SmartDataFileItemMenu')
-@include('includes.item-menus/SmartDataFolderItemMenu')
-@include('includes.item-menus/ShallowSmartDataMenu')
+@include('includes.item-menus/DataFileMenu')
+@include('includes.item-menus/DataFolderMenu')
+@include('includes.item-menus/PostAndGroupMenu')
+
 
 
 @include('includes.menu_post')
@@ -53,6 +54,35 @@
 
     <h2>Posts</h2>
     <br>
+    <form  enctype="multipart/form-data" name="1" class="" action="{{ $allURLs['sub_post_store'] }}" method="post">
+
+      <input class="g-bor-gre"  style="display: none;" type="text" name="form" value="posts">
+
+      {{csrf_field()}}
+      <div class="f-treeview">
+        <ul>
+          <li>
+            Posts
+
+            <?php echo PostAndGroupMenu(); ?>
+
+            <ul>
+              <?php //dd($PostList) ?>
+              <?php foreach($PostShowImSubPosts as $key => $value){?>
+                <li class="f-leaf">
+                  <a href="{{$value['url']}}">
+                    {{$key}}
+                  </a>
+                </li>
+              <?php }?>
+
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+    </form>
+
   </div>
   <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
     <h2>Data</h2>
@@ -65,7 +95,7 @@
     ?>
     <form  id="form" enctype="multipart/form-data" name="" class="" action="{{ $allURLs['sub_post_store'] }}" method="post">
       {{csrf_field()}}
-      <input class="g-bor-gre"  style="display: none;" type="text" name="Data_Form" value="1">
+      <input class="g-bor-gre"  style="display: none;" type="text" name="form" value="data">
 
       <div class="">
 
@@ -81,7 +111,7 @@
             <ul>
               <?php
               $IdentifierSuffix = -1;
-              foreach($DataShowAll as $key => $value2){
+              foreach($DataShowAll[$Attr[2]] as $key => $value2){
                 // dd($value2);
                 $IdentifierSuffix = $IdentifierSuffix+1;
                 $CurrentIdentifier = $Identifier."[".$Attr[2]."]"."[".$IdentifierSuffix."]";
@@ -91,43 +121,50 @@
                 if (is_array($value2)) {
                   // if (!isset($value2["SmartDataType"])) {
                   // }
+                  // dd($value2);
                   if ($value2[$Attr[1]] == 'folder') {
                     ?>
                     <li>
                       <?php
                       // dd($CurrentIdentifier);
                       ?>
-                      <input class="g-bor-gre"  style="" type="text" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[0] ?>]" value="<?php echo $value2[$Attr[0]] ?>">
-                      <input class=""  style="display:none;" type="text" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[1] ?>]" value="<?php echo $value2[$Attr[1]] ?>">
-                      <input class=""  style="display:none;" type="text" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[4] ?>]" value="<?php echo $value2[$Attr[4]] ?>">
+                      <div class="g-bor-lig-gre g-pad-2px g-mar-4px">
 
-                      <?php echo SmartDataFolderItemMenu($CurrentIdentifier,$Attr); ?>
+                        <input class="g-bor-gre"  style="" type="text" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[0] ?>]" value="<?php echo $value2[$Attr[0]] ?>">
+                        <input class=""  style="display:none;" type="text" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[1] ?>]" value="<?php echo $value2[$Attr[1]] ?>">
+                        <input class=""  style="display:none;" type="text" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[4] ?>]" value="<?php echo $value2[$Attr[4]] ?>">
+                        <?php echo DataFolderMenu($CurrentIdentifier,$Attr); ?>
+                      </div>
+
 
 
                       <?php
-                      list1($CurrentIdentifier,$value2[$Attr[2]],$Attr);
+                      list1($CurrentIdentifier,$value2,$Attr);
                       ?>
                     </li>
 
 
                   <?php  } else { ?>
                     <li class="f-leaf">
-                      <input class="g-bor-gre"  style="" type="text" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[0] ?>]" value="<?php echo $value2[$Attr[0]] ?>">
-                      <input class=""  style="display:none;" type="text" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[1] ?>]" value="<?php echo $value2[$Attr[1]] ?>">
-                      <input class=""  style="display:none;" type="text" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[4] ?>]" value="<?php echo $value2[$Attr[4]] ?>">
-                      <?php echo SmartDataFileItemMenu($CurrentIdentifier,$Attr); ?>
-                      <?php if ($value2[$Attr[1]] == 'image') { ?>
-                        <div class="">
-                          <?php
-                           // dd($value2[$Attr[2]])
-                           ?>
-                          <img style="max-width: 50%;" alt="Embedded Image" src="<?php echo $value2[$Attr[2]]; ?>" />
-                          <textarea class="g-bor-gre "  style="display:none;" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[2] ?>]" rows="8" ><?php echo $value2[$Attr[2]]; ?></textarea>
-                        </div>
-                      <?php } else { ?>
+                      <div class="g-bor-lig-gre g-pad-2px g-mar-4px">
 
-                        <textarea class="g-bor-gre "  style="width:100%;" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[2] ?>]" rows="8" ><?php echo $value2[$Attr[2]]; ?></textarea>
-                      <?php } ?>
+                        <input class="g-bor-gre"  style="" type="text" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[0] ?>]" value="<?php echo $value2[$Attr[0]] ?>">
+                        <input class=""  style="display:none;" type="text" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[1] ?>]" value="<?php echo $value2[$Attr[1]] ?>">
+                        <input class=""  style="display:none;" type="text" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[4] ?>]" value="<?php echo $value2[$Attr[4]] ?>">
+                        <?php echo DataFileMenu($CurrentIdentifier,$Attr); ?>
+                        <?php if ($value2[$Attr[1]] == 'image') { ?>
+                          <div class="">
+                            <?php
+                            // dd($value2[$Attr[2]])
+                            ?>
+                            <img style="max-width: 50%;" alt="Embedded Image" src="<?php echo $value2[$Attr[2]]; ?>" />
+                            <textarea class="g-bor-gre "  style="display:none;" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[2] ?>]" rows="8" ><?php echo $value2[$Attr[2]]; ?></textarea>
+                          </div>
+                        <?php } else { ?>
+
+                          <textarea class="g-bor-gre f-res-ver"  style="width:100%;" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[2] ?>]" rows="8" ><?php echo $value2[$Attr[2]]; ?></textarea>
+                        <?php } ?>
+                      </div>
                     </li>
 
                     <?php
@@ -143,6 +180,7 @@
           <div class="f-treeview" >
 
                 <?php
+                // dd($DataShowAll);
                 $Identifier = "Data";
                 list1($Identifier,$DataShowAll,$Attr);
                 ?>

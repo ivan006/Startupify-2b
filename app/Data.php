@@ -122,7 +122,7 @@ class Data extends Model
         default:
         // code...
         $result[$Attr[2]] = "unknown data type \"".$ShowDataContent["type"]."\"";
-        $result[$Attr[1]] = 'text';
+        $result[$Attr[1]] = 'unknown';
         $result[$Attr[0]] = $ShowDataContent["name"];
         $result[$Attr[4]] = $ShowDataContent["id"];
         // $result[$Attr[5]] = $ShowDataContent["subtype"];
@@ -160,8 +160,8 @@ class Data extends Model
 
           // $DataLocation = $PostShowID . "/" . $value;
           // $result[$value["name"]]["?"] = "?";
-
-          if (!empty($SubData)) {
+          // dd($value);
+          if ($value["type"] == "folder") {
             // dd($SubData);
 
 
@@ -182,28 +182,29 @@ class Data extends Model
 
     $GroupShowID = Group::ShowID($routeParameters);
     $PostShowID = Post::ShowID($GroupShowID,$routeParameters);
+    // dd($PostShowID);
     // $PostShowID = Post::ShowID($PostShowID,$routeParameters);
     // dd($PostShowID);
+    $Identifier = null;
     if (!empty($PostShowID)) {
-      // $Show[$ShowDataID] =   ShowHelper($PostShowID);
-
       $BaseData = Post::find($PostShowID)->DataChildren->toArray();
-      $Identifier = null;
-      $Show =   ShowHelper($BaseData,$Identifier);
-      // dd($Show);
-      // dd($Show);
-      return $Show;
+    } elseif (!empty($GroupShowID)) {
+      $BaseData = Group::find($GroupShowID)->DataChildren->toArray();
     }
+    $Show =   ShowHelper($BaseData,$Identifier);
+    // dd($Show);
+    return $Show;
   }
 
   public static function ShowAttributeTypes() {
     $ShowAttributeTypes = array  (
-      '0'=>'Name',
-      '1'=>'Type',
-      '2'=>'Content',
-      '3'=>'Selected',
-      '4'=>'ID',
-      '5'=>'Subtype',
+      '0'=>'name',
+      '1'=>'type',
+      '2'=>'content',
+      '3'=>'action',
+      '4'=>'id',
+      '5'=>'subtype',
+      '6'=>'add',
 
     );
     // ["/SmartDataName"] =   'SmartDataName';
@@ -217,37 +218,81 @@ class Data extends Model
   }
 
 
-  public static function Store($request, $ShowID) {
-    function StoreHelperStore($Selected,$Data,$Attr) {
-      foreach($Data["Content"] as $key => $value) {
-        $key = SmartDataItemM::g_base64_decode($key);
-        if ($value[$Attr[1]]=="folder"){
-          if (isset($value[$Attr[3]]) OR $Selected == 1) {
-            if (!empty($value[$Attr[4]])) {
-              // code...
-              Data::find($value[$Attr[4]])
-              ->update([
-                'name'=>$value[$Attr[0]],
-              ]);
+  public static function Store($request) {
+    // dd($request);
+    function StoreHelperStore($Action,$Data,$Attr) {
+      if (isset($Data[$Attr[2]])) {
+        // code...
+
+        foreach($Data[$Attr[2]] as $key => $value) {
+          // $key = SmartDataItemM::g_base64_decode($key);
+          if ($value[$Attr[1]]=="folder"){
+            if (isset($value[$Attr[3]]) ) {
+              $Action = $value[$Attr[3]];
             }
 
-           $Selected = 1;
-          } else {
-            $Selected = 0;
-          }
-          StoreHelperStore($Selected, $value,$Attr);
-        } else {
+            switch ($Action) {
+              case 'update':
+              if (!empty($value[$Attr[4]])) {
+                // code...
+                Data::find($value[$Attr[4]])
+                ->update([
+                  'name'=>$value[$Attr[0]],
+                ]);
+              }
 
-          if (isset($value[$Attr[3]]) OR $Selected == 1) {
-            // if (!isset($value[$Attr[2]])) {
-            //   // code...
-            //   dd($value);
-            // }
-             Data::find($value[$Attr[4]])
-             ->update([
-               'name'=>$value[$Attr[0]],
-               'content'=>$value[$Attr[2]],
-             ]);
+              StoreHelperStore($Action, $value,$Attr);
+              break;
+              case 'create_folder':
+
+              // $name = "_data";
+              $name = $value[$Attr[6]]["folder"];
+              $parent_id = $value[$Attr[4]];
+              $parent_type = "App\Data";
+              $type = "folder";
+              $content = "null";
+
+              // Data::Create($name,$parent_id,$parent_type,$type,$content)
+              Data::Add($name, $parent_id,$parent_type,$type,$content);
+              break;
+              case 'create_file':
+
+              // $name = "_data";
+              $name = $value[$Attr[6]]["file"];
+              $parent_id = $value[$Attr[4]];
+              $parent_type = "App\Data";
+              $type = "file";
+              $content = "null";
+
+              // Data::Create($name,$parent_id,$parent_type,$type,$content)
+              Data::Add($name, $parent_id,$parent_type,$type,$content);
+              break;
+
+              default:
+              // code...
+              break;
+            }
+          } else {
+
+            if (isset($value[$Attr[3]])) {
+              $Action = $value[$Attr[3]];
+            }
+
+            switch ($Action) {
+              case 'update':
+              if (!empty($value[$Attr[4]])) {
+                Data::find($value[$Attr[4]])
+                ->update([
+                  'name'=>$value[$Attr[0]],
+                  'content'=>$value[$Attr[2]],
+                ]);
+              }
+              break;
+
+              default:
+              // code...
+              break;
+            }
           }
         }
       }
@@ -257,7 +302,17 @@ class Data extends Model
     $Data = $request->get("Data");
     // dd($Data);
 
-    StoreHelperStore(0,$Data,$Attr);
+    StoreHelperStore(null,$Data,$Attr);
+  }
+  public static function Add ($name, $parent_id,$parent_type,$type,$content){
+    // dd($type);
+    Data::create([
+      'name'=>$name,
+      'parent_id'=>$parent_id,
+      'parent_type'=>$parent_type,
+      'type'=>$type,
+      'content'=>$content,
+    ]);
   }
 
 }

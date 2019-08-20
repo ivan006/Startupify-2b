@@ -6,9 +6,9 @@
 
 
 
-@include('includes.item-menus/SmartDataFileItemMenu')
-@include('includes.item-menus/SmartDataFolderItemMenu')
-@include('includes.item-menus/ShallowSmartDataMenu')
+@include('includes.item-menus/DataFileMenu')
+@include('includes.item-menus/DataFolderMenu')
+
 @include('includes.encode_decode')
 
 @include('includes.menu_post')
@@ -104,7 +104,7 @@
                       // dd($SmartDataID);
                       ?>
                       <input class="g-bor-gre"  style="" type="text" name="<?php echo $SmartDataID ?>[<?php echo $SmartDataItemM_ShowAttributeTypes['/SmartDataName'] ?>]" value="<?php echo $key ?>">
-                      <?php echo SmartDataFolderItemMenu($SmartDataID,$SmartDataItemM_ShowActions); ?>
+                      <?php echo DataFolderMenu($SmartDataID,$SmartDataItemM_ShowActions); ?>
 
 
                       <?php
@@ -125,7 +125,7 @@
                   <?php  } else {?>
                     <li class="f-leaf">
                       <input class="g-bor-gre"  style="" type="text" name="<?php echo $SmartDataID ?>[<?php echo $SmartDataItemM_ShowAttributeTypes['/SmartDataName'] ?>]" value="<?php echo $key ?>">
-                      <?php echo SmartDataFileItemMenu($SmartDataID,$SmartDataItemM_ShowActions); ?>
+                      <?php echo DataFileMenu($SmartDataID,$SmartDataItemM_ShowActions); ?>
                       <?php if ($value2[$Attribute_types['1']] == 'img') { ?>
                         <div class="">
 
