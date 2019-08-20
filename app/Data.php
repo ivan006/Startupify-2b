@@ -94,7 +94,7 @@ class Data extends Model
       $Attr = Data::ShowAttributeTypes();
 
       switch ($ShowDataContent["type"]) {
-        case 'text':
+        case 'file':
         // code...
 
         $result[$Attr[2]] = $ShowDataContent["content"];
