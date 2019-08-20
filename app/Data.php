@@ -32,50 +32,100 @@ class Data extends Model
     $GroupShowID = Group::ShowID($routeParameters);
     $PostShowID = Post::ShowID($GroupShowID,$routeParameters);
 
+    $DataShowSigPref = Data::ShowSignaturePrefix();
+    if (!empty($PostShowID)) {
+
+
+      // code...
+      $Post = Post::find($PostShowID);
+      if (!empty($Post)) {
+        // code...
+        $Data = $Post->DataChildren->where('name', $DataShowSigPref)->first();
+        if (!empty($Data)) {
+          // code...
+          $ShowParentID = $Data->id;
+
+        }
+      }
+
+    } elseif (!empty($GroupShowID)) {
+
+      // code...
+
+      $Group = Group::find($GroupShowID);
+      if (!empty($Group)) {
+        // code...
+        $Data = $Group->DataChildren->where('name', $DataShowSigPref)->first();
+        if (!empty($Data)) {
+          // code...
+          $ShowParentID = $Data->id;
+
+        }
+      }
+
+    }
+
     $DataSigFragments = explode("/", $DataSig);
+
     // ----------------
     // querie strat
     // ----------------
 
-    $stage = 1;
-    foreach ($DataSigFragments as $key => $value) {
-      if ($stage==1) {
-        // code...
-        $DataShowSigPref = Data::ShowSignaturePrefix();
-        $Post = Post::find($PostShowID);
-        if (!empty($Post)) {
-          // code...
-          $Data = Post::find($PostShowID)->DataChildren->where('name', $DataShowSigPref)->first();
+    // $stage = 1;
+    if (!empty($ShowParentID)) {
+      // code...
+      $ShowID = $ShowParentID;
+      foreach ($DataSigFragments as $key => $value) {
+        // array_shift($DataSigFragments);
+        // $Data = Data::find($ShowID)->children->where('name', $value)->first();
+        //
+        // if (!empty($Data)) {
+        //   $ShowID = $Data->id;
+        // }
+        $DataParent = Data::find($ShowID);
+        if (!empty($DataParent)) {
+          $Data = $DataParent->children->where('name', $value)->first();
           if (!empty($Data)) {
-            // code...
+            // if ($value == "Rich.txt") {
+            //   dd(10);
+            // }
+            // dd($DataParent);
             $ShowID = $Data->id;
-            $stage = 2;
+          } else {
+            $ShowID = null;
           }
+        } else {
+          // dd(123114);
+          // dd(1);
+          $ShowID = null;
         }
-      } else {
-        array_shift($DataSigFragments);
-        $Data = Data::find($ShowID)->children->where('name', $value)->first();
 
-        if (!empty($Data)) {
-          $ShowID = $Data->id;
-        }
+          // if ($DataSig == "code/w3.css") {
+          //   dd($ShowID);
+          //   // code...
+          // }
+
+
+
+
+        // $ShowID = DB::select(
+        //   'SELECT *
+        //   FROM data a, data b
+        //   WHERE a.parent_id = b.id
+        //   AND a.parent_type = "App\\Data"
+        //   ;'
+        // );
+
+        // ----------------
+        // querie strat
+        // ----------------
       }
-
-
-
-
-      // $ShowID = DB::select(
-      //   'SELECT *
-      //   FROM data a, data b
-      //   WHERE a.parent_id = b.id
-      //   AND a.parent_type = "App\\Data"
-      //   ;'
-      // );
-
-      // ----------------
-      // querie strat
-      // ----------------
+      // dd($ShowID);
     }
+    // if ($ShowID==32) {
+    //   dd(443);
+    //   // code...
+    // }
     if (isset($ShowID)) {
       return $ShowID;
     }
@@ -86,6 +136,7 @@ class Data extends Model
 
   public static function Show($DataShowID) {
     $DataShowAll = Data::find($DataShowID);
+
     // dd($dd);
     if (!empty($DataShowAll)) {
       $ShowDataContent = $DataShowAll->toArray();
@@ -93,51 +144,50 @@ class Data extends Model
 
       $Attr = Data::ShowAttributeTypes();
 
-      switch ($ShowDataContent["type"]) {
-        case 'file':
-        // code...
+      // $fileExtension = Data::FileExtention($ShowDataContent["name"]);
+      // // dd(122);
+      // // $fileExtension = Data::FileExtention("dddd.aa");
+      // // dd($fileExtension);
+      // if (
+      //   $fileExtension=="png"
+      //   or $fileExtension=="jpg"
+      //   or $fileExtension=="jpeg"
+      //   or $fileExtension=="png"
+      //   or $fileExtension=="gif"
+      // ) {
+      //   $result[$Attr[2]] = $ShowDataContent["content"];
+      //   $result[$Attr[1]] = $ShowDataContent["type"];
+      //   $result[$Attr[0]] = $ShowDataContent["name"];
+      //   $result[$Attr[4]] = $ShowDataContent["id"];
+      // } else {
+      //   $result[$Attr[2]] = $ShowDataContent["content"];
+      //   $result[$Attr[1]] = $ShowDataContent["type"];
+      //   $result[$Attr[0]] = $ShowDataContent["name"];
+      //   $result[$Attr[4]] = $ShowDataContent["id"];
+      // }
+      // // else {
+      // //   $result[$Attr[2]] = "unknown data type \"".$ShowDataContent["type"]."\"";
+      // //   $result[$Attr[1]] = 'unknown';
+      // //   $result[$Attr[0]] = $ShowDataContent["name"];
+      // //   $result[$Attr[4]] = $ShowDataContent["id"];
+      // // }
 
-        $result[$Attr[2]] = $ShowDataContent["content"];
-        $result[$Attr[1]] = $ShowDataContent["type"];
-        $result[$Attr[0]] = $ShowDataContent["name"];
-        $result[$Attr[4]] = $ShowDataContent["id"];
-        // $result[$Attr[5]] = $ShowDataContent["subtype"];
-        break;
-        case 'image':
-        // code...
 
-        // mime_content_type($DataLocation) == "image/jpeg"
+      $result[$Attr[2]] = $ShowDataContent["content"];
+      $result[$Attr[1]] = $ShowDataContent["type"];
+      $result[$Attr[0]] = $ShowDataContent["name"];
+      $result[$Attr[4]] = $ShowDataContent["id"];
 
-        // $subtype = $ShowDataContent["subtype"];
-        // $data = ;
-        // $base64 = 'data:image/' . $subtype . ';base64,' . $data;
-
-        $result[$Attr[2]] = $ShowDataContent["content"];
-        $result[$Attr[1]] = $ShowDataContent["type"];
-        $result[$Attr[0]] = $ShowDataContent["name"];
-        $result[$Attr[4]] = $ShowDataContent["id"];
-        // $result[$Attr[5]] = $ShowDataContent["subtype"];
-        break;
-
-        default:
-        // code...
-        $result[$Attr[2]] = "unknown data type \"".$ShowDataContent["type"]."\"";
-        $result[$Attr[1]] = 'unknown';
-        $result[$Attr[0]] = $ShowDataContent["name"];
-        $result[$Attr[4]] = $ShowDataContent["id"];
-        // $result[$Attr[5]] = $ShowDataContent["subtype"];
-        break;
-      }
       return $result;
     }
 
 
   }
-  public static function ShowRelativeSignature($arg) {
-      $result = Data::ShowSignaturePrefix()."/".$arg;
-      return $result;
-
-  }
+  // public static function ShowRelativeSignature($arg) {
+  //     $result = Data::ShowSignaturePrefix()."/".$arg;
+  //     return $result;
+  //
+  // }
   public static function ShowSignaturePrefix() {
 
       $result = "_data";
@@ -316,5 +366,11 @@ class Data extends Model
       'content'=>$content,
     ]);
   }
+  // public static function FileExtention($name){
+  //   $explodedName = explode(".", $name);
+  //   $extention = end($explodedName);
+  //   return $extention;
+  // }
+
 
 }

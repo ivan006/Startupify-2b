@@ -10,6 +10,7 @@
 @include('includes.item-menus/DataFolderMenu')
 @include('includes.item-menus/PostAndGroupMenu')
 
+@include('includes.item-menus/functions')
 
 
 @include('includes.menu_post')
@@ -152,7 +153,19 @@
                         <input class=""  style="display:none;" type="text" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[1] ?>]" value="<?php echo $value2[$Attr[1]] ?>">
                         <input class=""  style="display:none;" type="text" name="<?php echo $CurrentIdentifier ?>[<?php echo $Attr[4] ?>]" value="<?php echo $value2[$Attr[4]] ?>">
                         <?php echo DataFileMenu($CurrentIdentifier,$Attr); ?>
-                        <?php if ($value2[$Attr[1]] == 'image') { ?>
+                        <?php
+                        $fileExtension = FileExtention($value2[$Attr[0]]);
+                        // dd($extention);
+
+                        // if ($value2[$Attr[1]] == 'image') {
+                        if (
+                          $fileExtension=="png"
+                          or $fileExtension=="jpg"
+                          or $fileExtension=="jpeg"
+                          or $fileExtension=="png"
+                          or $fileExtension=="gif"
+                        ) {
+                        ?>
                           <div class="">
                             <?php
                             // dd($value2[$Attr[2]])

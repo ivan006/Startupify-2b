@@ -161,9 +161,9 @@ class ShortcodeMiddleware
 
                 $Attr = Data::ShowAttributeTypes();
 
-                $DataShowRelSig = Data::ShowRelativeSignature($parameter);
+                $DataShowRelSig = $parameter;
+                // dd($DataShowRelSig);
                 $DataShowID = Data::ShowID($routeParameters,$DataShowRelSig);
-
                 $DataValues = Data::Show($DataShowID);
                 // dd($DataValues);
 

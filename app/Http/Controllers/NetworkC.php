@@ -86,8 +86,10 @@ class NetworkC extends Controller
 
         $allURLs = Post::ShowActions($routeParameters);
 
-        $DataShowRelSig = Data::ShowRelativeSignature("Details/Rich.txt");
+        $DataShowRelSig = "Rich.txt";
+        // dd($DataShowRelSig);
         $DataShowID = Data::ShowID($routeParameters,$DataShowRelSig);
+        // dd($DataShowID);
         // dd($DataShowID);
         if (!empty($DataShowID)) {
           // code...
@@ -98,6 +100,7 @@ class NetworkC extends Controller
         }
 
         $Attr = Data::ShowAttributeTypes();
+        // dd($DataValues);
         $RichDataShow = $DataValues[$Attr[2]];
         // dd($RichDataShow);
         // $ShowBaseIDPlusBaseLocation = Post::ShowBaseIDPlusBaseLocation($routeParameters);
@@ -132,7 +135,7 @@ class NetworkC extends Controller
         $allURLs = Post::ShowActions($routeParameters);
 
 
-        $DataShowRelSig = Data::ShowRelativeSignature("Details/Rich.txt");
+        $DataShowRelSig = "Rich.txt";
         $DataShowID = Data::ShowID($routeParameters,$DataShowRelSig);
         // dd($DataShowID);
         if (!empty($DataShowID)) {
