@@ -1,6 +1,3 @@
-
-
-
 @include('includes.base-dom/general-include-one-of-four')
 
 <link href="{{ asset('css/treeview.css') }}" rel="stylesheet">
@@ -36,52 +33,44 @@
 
 <!-- Middle Column -->
 <div class="w3-col m8">
+  <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
 
-  <?php
-  // if (isset($VSiteHeader)) {
-  //   echo $VSiteHeader;
-  // }
-  //
-  // if (isset($VPgCont["rich.html"])) {
-  //   echo $VPgCont["rich.html"];
-  // }
-  ?>
+    <h2>
+      Groups
 
-        <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+    </h2>
+    <form  enctype="multipart/form-data" name="1" class="" action="{{ $allURLs['sub_post_store'] }}" method="post">
 
-          <h2>
-            Groups
+      <input class="g-bor-gre"  style="display: none;" type="text" name="All_Content" value="1">
 
-          </h2>
-          <form  enctype="multipart/form-data" name="1" class="" action="{{ $allURLs['sub_post_store'] }}" method="post">
-
-            <input class="g-bor-gre"  style="display: none;" type="text" name="All_Content" value="1">
-
-            {{csrf_field()}}
-            <div class="f-treeview">
-              <ul>
-                <li>
-                  Network
-                  <?php echo PostAndGroupMenu(); ?>
-                  <ul>
-                    <?php //dd($PostList) ?>
-                    <?php foreach($PostList as $key => $value){?>
-                      <li class="f-leaf">
-                        <a href="{{$value['url']}}">
-                          {{$key}}
-                        </a>
-                      </li>
-                    <?php }?>
-
-                  </ul>
+      {{csrf_field()}}
+      <div class="f-treeview">
+        <ul>
+          <li>
+            Network
+            <?php echo PostAndGroupMenu(); ?>
+            <ul>
+              <?php
+              foreach ($PostList as $key => $value) {
+                  ?>
+                <li class="f-leaf">
+                  <a href="{{$value['url']}}">
+                    {{$key}}
+                  </a>
                 </li>
-              </ul>
-            </div>
-          </form>
+                <?php
+              }
+              ?>
 
-          <br>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </form>
 
-        </div>
+    <br>
+
+  </div>
 
   <br>
 

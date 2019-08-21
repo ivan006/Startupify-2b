@@ -1,4 +1,7 @@
-<?php function PostAndGroupMenu(){ ?>
+<?php
+function PostAndGroupMenu()
+{
+  ?>
   <span class="" style="  ">
 
     <label>
@@ -16,4 +19,6 @@
       </div>
     </label>
   </span>
-<?php } ?>
+  <?php
+}
+?>

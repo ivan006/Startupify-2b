@@ -1,6 +1,3 @@
-
-
-
 @include('includes.base-dom/general-include-one-of-four')
 
 
@@ -52,7 +49,10 @@
 
 
       <li>
-        To edit the group click "mode", at the top, and select "edit" mode after opeing it.
+        To edit the group go to the group and from there click "mode", at the top, and select "edit".
+      </li>
+      <li>
+        To add a group from here click "mode", at the top, and select "edit" then click "create" etc...
       </li>
 
     </ul>
@@ -73,13 +73,17 @@
         <li>
           Network
           <ul>
-            <?php foreach($PostList as $key => $value){?>
+            <?php
+            foreach ($PostList as $key => $value) {
+              ?>
               <li class="f-leaf">
                 <a href="{{$value['url']}}">
                   {{$key}}
                 </a>
               </li>
-            <?php }?>
+              <?php
+            }
+            ?>
 
           </ul>
         </li>
