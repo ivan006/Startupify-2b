@@ -3,13 +3,13 @@
 <div  class="f-multi-level-dropdown f-bg-col-blu f-fon-18px f-fon-fam-open ">
   <ul>
     <li>
-      <a  href="{{ route('NetworkC.show') }}">Home
+      <a  href="{{ route('NetworkC.edit') }}">Home
       </a>
     </li>
     <li>
       <div class="toggle">
         <a href="#">
-          Tool
+          Tools
         </a>
         <ul>
           <!-- <li>

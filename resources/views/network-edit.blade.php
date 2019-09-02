@@ -74,7 +74,7 @@
                     <input class="kv-tog-on-ib-switch kv-tog-off-ib-switch" type="checkbox" name="checkbox" value="value">
                     <input class="kv-field-container kv-name kv-tog-on-ib" type="text" name="" value="{{$key}}">
                     <a href="{{$value['url']}}" class="kv-name-unedit kv-name kv-tog-off-ib ">{{$key}}</a>
-                    <span class="kv-little-button ">^</span>
+                    <span class="kv-little-button ">∧</span>
                   </label>
 
                   <input class="kv-di-no" type="text" name="" value="">
