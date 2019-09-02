@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Group;
-use App\Report;
+use App\Post;
 use App\Data;
-use App\Entity;
 
 class NetworkC extends Controller
 {
@@ -41,15 +40,15 @@ class NetworkC extends Controller
     array_shift($routeParameters);
 
     if (!empty($routeParameters)) {
-      Report::Store($routeParameters, $request);
-      $allURLs = Report::ShowActions($routeParameters);
+      Post::Store($routeParameters, $request);
+      $allURLs = Post::ShowActions($routeParameters);
 
-      return redirect($allURLs['sub_report_edit']);
+      return redirect($allURLs['sub_post_edit']);
     } else {
       Group::Add($request);
-      $allURLs = Report::ShowActions($routeParameters);
+      $allURLs = Post::ShowActions($routeParameters);
 
-      return redirect($allURLs['sub_report_edit']);
+      return redirect($allURLs['sub_post_edit']);
     }
   }
 
@@ -64,12 +63,12 @@ class NetworkC extends Controller
   {
     $routeParameters = func_get_args();
     if (empty($routeParameters)) {
-      $allURLs = Report::ShowActions($routeParameters);
-      $ReportList = Group::ShowAll();
+      $allURLs = Post::ShowActions($routeParameters);
+      $PostList = Group::ShowAll();
 
-      return view('network-read', compact('ReportList', 'allURLs'));
+      return view('network-read', compact('PostList', 'allURLs'));
     } else {
-      $allURLs = Report::ShowActions($routeParameters);
+      $allURLs = Post::ShowActions($routeParameters);
 
       $DataShowRelSig = 'Rich.txt';
       $DataShowID = Data::ShowID($routeParameters, $DataShowRelSig);
@@ -79,8 +78,9 @@ class NetworkC extends Controller
         $DataValues = null;
       }
 
-      $Attr = Entity::ShowAttributeTypes();
+      $Attr = Data::ShowAttributeTypes();
       $RichDataShow = $DataValues[$Attr[2]];
+
       return view('group-read', compact('allURLs', 'RichDataShow'));
     }
   }
@@ -99,15 +99,12 @@ class NetworkC extends Controller
     if (!empty($arguments)) {
       array_shift($arguments);
       array_shift($arguments);
-      $Attr = Entity::ShowAttributeTypes();
+      $Attr = Data::ShowAttributeTypes();
+      $DataShowAll[$Attr[2]] = Data::ShowAll($routeParameters);
 
+      $SmartDataItemM_ShowActions = Data::ShowActions();
 
-      $DataShowMultiStyledForEdit = Data::ShowMultiStyledForEdit($routeParameters);
-
-
-      // $SmartDataItemM_ShowActions = Data::ShowActions();
-
-      $allURLs = Report::ShowActions($routeParameters);
+      $allURLs = Post::ShowActions($routeParameters);
 
       $DataShowRelSig = 'Rich.txt';
       $DataShowID = Data::ShowID($routeParameters, $DataShowRelSig);
@@ -118,20 +115,15 @@ class NetworkC extends Controller
       }
       $RichDataShow = $DataValues[$Attr[2]];
 
-      // $ReportShowImSubReports = Report::ShowImmediateSubReport($routeParameters);
+      $PostShowImSubPosts = Post::ShowImmediateSubPost($routeParameters);
 
-
-
-
-      $ReportShowMultiStyledForEdit = Report::ShowMultiStyledForEdit($routeParameters);
-
-
-      return view('group-edit', compact('allURLs', 'RichDataShow', 'Attr', 'ReportShowMultiStyledForEdit', 'DataShowMultiStyledForEdit'));
+      return view('group-edit', compact('DataShowAll', 'allURLs', 'RichDataShow', 'Attr', 'PostShowImSubPosts'));
     } else {
-      $allURLs = Report::ShowActions(func_get_args());
-      $ReportList = Group::ShowAll();
+      $allURLs = Post::ShowActions(func_get_args());
+      $PostList = Group::ShowAll();
+      $SmartDataItemM_ShowActions = Data::ShowActions();
 
-      return view('network-edit', compact('ReportList', 'allURLs'));
+      return view('network-edit', compact('PostList', 'allURLs', 'SmartDataItemM_ShowActions'));
     }
   }
 

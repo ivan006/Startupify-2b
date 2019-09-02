@@ -20,6 +20,7 @@ class CreateDataTable extends Migration
             $table->integer('parent_id');
             $table->string('parent_type');
             $table->string('type');
+            // $table->string('subtype');
             $table->text('content');
         });
     }

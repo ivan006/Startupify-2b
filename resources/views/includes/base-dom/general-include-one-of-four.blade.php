@@ -3,7 +3,7 @@
 <head>
 
 
-  <title>Harmonyville - Affordable asset management</title>
+  <title>Harmonyville - E-commerce for all</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="{{ asset('css/w3.css') }}" rel="stylesheet">
