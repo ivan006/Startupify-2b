@@ -29,7 +29,7 @@
         To add a group click the "+" symbol next to the Harmonyville item bellow.
       </li>
       <li>
-        To edit the group select the "editor" tool from the menu at the top after opening the group.
+        To edit a group select the "editor" tool from the menu at the top after opening the group.
       </li>
 
     </ul>
