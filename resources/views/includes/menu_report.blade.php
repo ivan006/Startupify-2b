@@ -17,7 +17,7 @@
         </a>
       </li> -->
       <li>
-        <a  href=" {{ $allURLs['sub_post_read'] }}">Show
+        <a  href=" {{ $allURLs['sub_report_read'] }}">Show
         </a>
       </li>
       <!-- <li>
@@ -25,7 +25,7 @@
     </a>
   </li> -->
   <li>
-    <a  href="{{ $allURLs['sub_post_edit'] }}">Edit
+    <a  href="{{ $allURLs['sub_report_edit'] }}">Edit
     </a>
   </li>
 </ul>

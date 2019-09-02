@@ -10,11 +10,12 @@ class Group extends Model
   protected $primaryKey = 'id';
   protected $fillable = [
     'name',
+    'type',
   ];
 
-  public function PostChildren()
+  public function ReportChildren()
   {
-    return $this->morphMany('App\Post', 'parent');
+    return $this->morphMany('App\Report', 'parent');
   }
 
   public function DataChildren()
@@ -54,16 +55,20 @@ class Group extends Model
 
     $var = new Group();
     $var->name = $GroupName;
+    $var->type = 'folder';
     $var->save();
 
     $GroupId = $var->attributes['id'];
 
-    $name = '_data';
-    $parent_id = $GroupId;
-    $parent_type = "App\Group";
-    $type = 'folder';
-    $content = 'null';
 
-    Data::Add($name, $parent_id, $parent_type, $type, $content);
+
+    Data::create([
+      'name' => '_data',
+      'parent_id' => $GroupId,
+      'parent_type' => "App\Group",
+      'type' => 'folder',
+      'content' => 'null',
+    ]);
+
   }
 }

@@ -21,7 +21,7 @@ class Data extends Model
     return $this->morphTo();
   }
 
-  public function children()
+  public function DataChildren()
   {
     return $this->morphMany('App\Data', 'parent');
   }
@@ -29,13 +29,13 @@ class Data extends Model
   public static function ShowID($routeParameters, $DataSig)
   {
     $GroupShowID = Group::ShowID($routeParameters);
-    $PostShowID = Post::ShowID($GroupShowID, $routeParameters);
+    $ReportShowID = Report::ShowID($GroupShowID, $routeParameters);
 
     $DataShowSigPref = Data::ShowSignaturePrefix();
-    if (!empty($PostShowID)) {
-      $Post = Post::find($PostShowID);
-      if (!empty($Post)) {
-        $Data = $Post->DataChildren->where('name', $DataShowSigPref)->first();
+    if (!empty($ReportShowID)) {
+      $Report = Report::find($ReportShowID);
+      if (!empty($Report)) {
+        $Data = $Report->DataChildren->where('name', $DataShowSigPref)->first();
         if (!empty($Data)) {
           $ShowParentID = $Data->id;
         }
@@ -61,7 +61,7 @@ class Data extends Model
       foreach ($DataSigFragments as $key => $value) {
         $DataParent = Data::find($ShowID);
         if (!empty($DataParent)) {
-          $Data = $DataParent->children->where('name', $value)->first();
+          $Data = $DataParent->DataChildren->where('name', $value)->first();
           if (!empty($Data)) {
             $ShowID = $Data->id;
           } else {
@@ -95,7 +95,7 @@ class Data extends Model
     if (!empty($DataShowAll)) {
       $ShowDataContent = $DataShowAll->toArray();
 
-      $Attr = Data::ShowAttributeTypes();
+      $Attr = Entity::ShowAttributeTypes();
 
       $result[$Attr[2]] = $ShowDataContent['content'];
       $result[$Attr[1]] = $ShowDataContent['type'];
@@ -113,157 +113,23 @@ class Data extends Model
     return $result;
   }
 
-  public static function ShowAll($routeParameters)
+
+
+  public static function ShowMultiStyledForEdit($routeParameters)
   {
-    if (!function_exists('App\ShowHelper')) {
-      function ShowHelper($Data, $Identifier)
-      {
-        $result = array();
-        $Attr = Data::ShowAttributeTypes();
 
-        $Identifier = -1;
-        foreach ($Data as $key => $value) {
-          $Identifier = $Identifier + 1;
-
-          $SubData = Data::find($value['id'])->children->toArray();
-
-          if ('folder' == $value['type']) {
-            $result[$Identifier][$Attr[2]] = ShowHelper($SubData, $Identifier);
-            $result[$Identifier][$Attr[1]] = $value['type'];
-            $result[$Identifier][$Attr[0]] = $value['name'];
-            $result[$Identifier][$Attr[4]] = $value['id'];
-          } else {
-            $result[$Identifier] = Data::Show($value['id']);
-          }
-        }
-
-        return  $result;
-      }
-    }
-
-    $GroupShowID = Group::ShowID($routeParameters);
-    $PostShowID = Post::ShowID($GroupShowID, $routeParameters);
-
-    $Identifier = null;
-    if (!empty($PostShowID)) {
-      $BaseData = Post::find($PostShowID)->DataChildren->toArray();
-    } elseif (!empty($GroupShowID)) {
-      $BaseData = Group::find($GroupShowID)->DataChildren->toArray();
-    }
-    $Show = ShowHelper($BaseData, $Identifier);
-
-    return $Show;
+    $EntityType = 'Data';
+    $result = Entity::ShowMultiStyledForEdit($EntityType,$routeParameters);
+    return $result;
   }
 
-  public static function ShowAttributeTypes()
+  public static function StoreMultiForEdit($ShowChangesForEdit)
   {
-    $ShowAttributeTypes = array(
-    '0' => 'name',
-    '1' => 'type',
-    '2' => 'content',
-    '3' => 'action',
-    '4' => 'id',
-    '5' => 'subtype',
-    '6' => 'add',
-    );
-
-    return $ShowAttributeTypes;
+    $EntityType = 'Data';
+    Entity::StoreMultiForEdit($ShowChangesForEdit,$EntityType);
   }
 
-  public static function ShowActions()
-  {
-    $ShowActions['SelectedSmartDataItem'] = 'Selected';
 
-    return $ShowActions;
-  }
 
-  public static function Store($request)
-  {
-    function StoreHelperStore($Action, $Data, $Attr)
-    {
-      if (isset($Data[$Attr[2]])) {
-        foreach ($Data[$Attr[2]] as $key => $value) {
-          if ('folder' == $value[$Attr[1]]) {
-            if (isset($value[$Attr[3]])) {
-              $Action = $value[$Attr[3]];
-            }
 
-            switch ($Action) {
-              case 'update':
-              if (!empty($value[$Attr[4]])) {
-                Data::find($value[$Attr[4]])
-                ->update([
-                'name' => $value[$Attr[0]],
-                ]);
-              }
-              break;
-              case 'create_folder':
-
-              $name = $value[$Attr[6]]['folder'];
-              $parent_id = $value[$Attr[4]];
-              $parent_type = "App\Data";
-              $type = 'folder';
-              $content = 'null';
-
-              Data::Add($name, $parent_id, $parent_type, $type, $content);
-              $Action = null;
-              break;
-              case 'create_file':
-
-              $name = $value[$Attr[6]]['file'];
-              $parent_id = $value[$Attr[4]];
-              $parent_type = "App\Data";
-              $type = 'file';
-              $content = 'null';
-
-              Data::Add($name, $parent_id, $parent_type, $type, $content);
-
-              $Action = null;
-              break;
-
-              default:
-
-              break;
-            }
-            StoreHelperStore($Action, $value, $Attr);
-          } else {
-            if (isset($value[$Attr[3]])) {
-              $Action = $value[$Attr[3]];
-            }
-
-            switch ($Action) {
-              case 'update':
-              if (!empty($value[$Attr[4]])) {
-                Data::find($value[$Attr[4]])
-                ->update([
-                'name' => $value[$Attr[0]],
-                'content' => $value[$Attr[2]],
-                ]);
-              }
-              break;
-
-              default:
-
-              break;
-            }
-          }
-        }
-      }
-    }
-    $Attr = Data::ShowAttributeTypes();
-    $Data = $request->get('Data');
-
-    StoreHelperStore(null, $Data, $Attr);
-  }
-
-  public static function Add($name, $parent_id, $parent_type, $type, $content)
-  {
-    Data::create([
-    'name' => $name,
-    'parent_id' => $parent_id,
-    'parent_type' => $parent_type,
-    'type' => $type,
-    'content' => $content,
-    ]);
-  }
 }
