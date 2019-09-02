@@ -9,7 +9,7 @@
     <li>
       <div class="toggle">
         <a href="#">
-          Mode
+          Tool
         </a>
         <ul>
           <!-- <li>
@@ -17,7 +17,7 @@
         </a>
       </li> -->
       <li>
-        <a  href=" {{ $allURLs['sub_report_read'] }}">Show
+        <a  href=" {{ $allURLs['sub_report_read'] }}">Viewer
         </a>
       </li>
       <!-- <li>
@@ -25,7 +25,7 @@
     </a>
   </li> -->
   <li>
-    <a  href="{{ $allURLs['sub_report_edit'] }}">Edit
+    <a  href="{{ $allURLs['sub_report_edit'] }}">Editor
     </a>
   </li>
 </ul>

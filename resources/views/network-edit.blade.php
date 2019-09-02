@@ -13,6 +13,32 @@
 <!-- Middle Column -->
 <div class="w3-col m8">
   <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+
+    <h2>
+      Guide
+
+    </h2>
+    <p>
+      Welcome to Harmonyville.
+    </p>
+    <ul>
+      <li>
+        To view a group open it by selecting it from the list below.
+      </li>
+      <li>
+        To add a group click the "+" symbol next to the Harmonyville item bellow.
+      </li>
+      <li>
+        To edit the group select the "editor" tool from the menu at the top after opening the group.
+      </li>
+
+    </ul>
+
+
+    <br>
+
+  </div>
+  <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
     <h2>
       Groups
     </h2>
@@ -23,7 +49,7 @@
         <li>
           <div class="kv-item-container  kv-di-in ">
             <div class="kv-di-in">📁</div>
-            <div class="kv-name-unedit kv-name kv-tog-off-ib ">Harmonyville.net</div>
+            <div class="kv-name-unedit kv-name kv-tog-off-ib ">Harmonyville</div>
             <label class="kv-po-re">
               <span class="kv-little-button ">+</span>
               <input class="kv-tog-on-bl-switch" type="checkbox" name="checkbox" value="value">

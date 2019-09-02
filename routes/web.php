@@ -17,7 +17,7 @@
 // });
 
 Route::get('/', function () {
-    return redirect(route('NetworkC.show'));
+    return redirect(route('NetworkC.edit'));
 });
 
 Route::group(['middleware' => 'ShortcodeMiddleware'], function () {

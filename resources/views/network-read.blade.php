@@ -13,35 +13,6 @@
   <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
 
     <h2>
-      Guide
-
-    </h2>
-    <p>
-      Welcome to Harmonyville.
-    </p>
-    <ul>
-      <li>
-        To view content just select a group from the list below.
-      </li>
-
-
-
-      <li>
-        To edit the group go to the group and from there click "mode", at the top, and select "edit".
-      </li>
-      <li>
-        To add a group from here click "mode", at the top, and select "edit" then click "create" etc...
-      </li>
-
-    </ul>
-
-
-    <br>
-
-  </div>
-  <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-
-    <h2>
       Groups
 
     </h2>
